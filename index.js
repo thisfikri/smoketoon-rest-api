@@ -20,7 +20,7 @@ const { authenticated } = require('./middleware');
 
 app.group('/api/v1/', (router) => {
 
-    router.post('/', (res, req) => {
+    router.get('/', (res, req) => {
         res.send('API RUNNING');
     });
     
