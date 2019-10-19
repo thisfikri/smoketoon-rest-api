@@ -4,7 +4,7 @@ const Image = models.image;
 const errorHandler = require('../handlers/errorHandler');
 
 
-const showWebtoonEpisodes = (req, res) => {
+exports.showWebtoonEpisodes = (req, res) => {
 Episode.findAll({
         where: {
             webtoon_id: req.params.webtoon_id
@@ -22,7 +22,7 @@ Episode.findAll({
         });
     });
 }
-const showWebtoonEpisodePages = (req, res) => {
+exports.showWebtoonEpisodePages = (req, res) => {
     Episode.findOne({
         where: {webtoon_id: req.params.webtoon_id}
     }).then((episode) => {
@@ -51,7 +51,7 @@ const showWebtoonEpisodePages = (req, res) => {
     });
 }
 
-const createEpisode = (req, res) => {
+exports.createEpisode = (req, res) => {
     const {image, title} = req.body;
     if (title && image) {
         Episode.create({
@@ -75,7 +75,7 @@ const createEpisode = (req, res) => {
     }
 }
 
-const updateEpisode = (req, res) => {
+exports.updateEpisode = (req, res) => {
     const {image, title} = req.body;
     if (title && image) {
         Episode.update({
@@ -98,7 +98,7 @@ const updateEpisode = (req, res) => {
     }
 }
 
-const deleteEpisode = (req, res) => {
+exports.deleteEpisode = (req, res) => {
     const {episode_id} = req.params;
     Episode.destroy({where: {id: episode_id}})
     .then(result =>  {
@@ -119,12 +119,4 @@ const deleteEpisode = (req, res) => {
             message: errorHandler.showMessage(e)
         });
     });
-}
-
-module.exports = {
-    showWebtoonEpisodePages,
-    createEpisode,
-    updateEpisode,
-    deleteEpisode,
-    showWebtoonEpisodes
 }

@@ -1,7 +1,7 @@
 const models = require('../models');
 const Image = models.image;
 
-const createImage = (req, res) => {
+exports.createImage = (req, res) => {
     const {title, image} = req.body;
     if (req.params.episode_id && req.params.webtoon_id && req.params.user_id) {
         Image.create({
@@ -26,7 +26,7 @@ const createImage = (req, res) => {
     }
 }
 
-const deleteImage = (req, res) => {
+exports.deleteImage = (req, res) => {
     const {image_id} = req.params;
     Image.destroy({where: {id: image_id }})
     .then(result => {
@@ -47,9 +47,4 @@ const deleteImage = (req, res) => {
             message: errorHandler.showMessage(e)
         });
     });
-}
-
-module.exports = {
-    createImage,
-    deleteImage
 }

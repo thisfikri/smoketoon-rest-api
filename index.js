@@ -54,4 +54,4 @@ app.group('/api/v1/', (router) => {
     router.delete('/user/:user_id/webtoon/:webtoon_id/episode/:episode_id/image/:image_id', authenticated, ImageController.deleteImage);
 });
 
-app.listen(port, () => console.log(`Listen on Port ${port}`));
+app.listen(process.env.PORT||9000, () => console.log(`Listen on Port 9000`));

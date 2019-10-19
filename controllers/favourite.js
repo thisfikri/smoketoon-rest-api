@@ -3,7 +3,7 @@ const errorHandler = require('../handlers/errorHandler');
 const Webtoon = models.webtoon;
 const Favourite = models.favourite;
 
-const showMyFavourites = (req, res) => {
+exports.showMyFavourites = (req, res) => {
     Favourite.findAll({
         where: {user_id: req.params.user_id},
         include: [{
@@ -25,7 +25,7 @@ const showMyFavourites = (req, res) => {
     });
 }
 
-const showFavourites = (req, res) => {
+exports.showFavourites = (req, res) => {
     Favourite.findAll({
         include: [{
             model: Webtoon,
@@ -46,7 +46,7 @@ const showFavourites = (req, res) => {
     });
 }
 
-const addMyFavourite = (req, res) => {
+exports.addMyFavourite = (req, res) => {
     if (req.params.user_id && req.params.webtoon_id) {
         Favourite.create({
             user_id: req.params.user_id,
@@ -67,7 +67,7 @@ const addMyFavourite = (req, res) => {
     }
 }
 
-const deleteMyFavourite = (req , res) => {
+exports.deleteMyFavourite = (req , res) => {
     Favourite.destroy({
         where: {
             id: req.params.favourite_id,
@@ -93,11 +93,4 @@ const deleteMyFavourite = (req , res) => {
             message: errorHandler.showMessage(e)
         });
     });
-}
-
-module.exports = {
-    showMyFavourites,
-    showFavourites,
-    addMyFavourite,
-    deleteMyFavourite
 }
