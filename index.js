@@ -20,6 +20,10 @@ const { authenticated } = require('./middleware');
 
 app.group('/api/v1/', (router) => {
 
+    router.post('/', (res, req) => {
+        res.send('API RUNNING');
+    });
+    
     // ------------- AUTH ---------------// 
     router.post('/login', AuthController.login);
 
