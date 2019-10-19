@@ -102,10 +102,11 @@ const showMyWebtoons = (req, res) => {
 }
 
 const createMyWebtoon = (req, res) => {
-    const {title, genre, image} = req.body;
+    const {title, genre, image, favourite_count} = req.body;
     Webtoon.create({
         title,
         genre,
+        favourite_count: favourite_count, 
         image,
         created_by: req.params.user_id
     })
