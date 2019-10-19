@@ -113,7 +113,8 @@ const createMyWebtoon = (req, res) => {
     .catch((error) => {
         console.log(error)
         res.send({
-            error: true
+            error: true,
+            message: error
         });
     });
 }
