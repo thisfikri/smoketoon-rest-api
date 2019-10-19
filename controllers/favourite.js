@@ -17,10 +17,10 @@ const showMyFavourites = (req, res) => {
         // }]
     })
     .then(favourites => res.send(favourites))
-    .catch((error) => {
-        console.log(error)
+    .catch((e) => {
         res.send({
-            error: true
+            error: true,
+            message: errorHandler.showMessage(e)
         });
     });
 }
@@ -38,26 +38,36 @@ const showFavourites = (req, res) => {
         // }]
     })
     .then(favourites => res.send(favourites))
-    .catch((error) => {
-        console.log(error)
+    .catch((e) => {
         res.send({
-            error: true
+            error: true,
+            message: errorHandler.showMessage(e)
         });
     });
 }
 
 const addMyFavourite = (req, res) => {
-    const { user_id, webtoon_id } = req.params;
-    Favourite.create({
-        user_id: req.params.user_id,
-        webtoon_id: req.params.webtoon_id
-    })
-    .then(result => res.send(result))
-    .catch(err => console.log(err));
+    if (req.params.user_id && req.params.webtoon_id) {
+        Favourite.create({
+            user_id: req.params.user_id,
+            webtoon_id: req.params.webtoon_id
+        })
+        .then(result => res.send(result))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
+        });
+    } else {
+        res.send({
+            error: true,
+            message: 'all field cannot be empty'
+        });
+    }
 }
 
 const deleteMyFavourite = (req , res) => {
-    console.log(req.params.favourite_id);
     Favourite.destroy({
         where: {
             id: req.params.favourite_id,
@@ -65,10 +75,24 @@ const deleteMyFavourite = (req , res) => {
             webtoon_id: req.params.webtoon_id
         }
     })
-    .then(result => res.send({
-        id: result
-    }))
-    .catch(err => console.log(err));
+    .then(result => {
+        if (result) {
+            res.send({
+                id: req.params.favourite_id
+            })
+        } else {
+            res.send({
+                error: true,
+                message: 'delete favourite failed'
+            });
+        }
+    })
+    .catch((e) => {
+        res.send({
+            error: true,
+            message: errorHandler.showMessage(e)
+        });
+    });
 }
 
 module.exports = {

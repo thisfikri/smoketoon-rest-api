@@ -4,7 +4,7 @@ const User = models.user;
 const Webtoon = models.webtoon;
 const Sequelize = require('sequelize');
 
-const index = (req, res) => {
+exports.index = (req, res) => {
     Webtoon.findAll({
         include: [{
             model: User,
@@ -12,33 +12,32 @@ const index = (req, res) => {
             attributes: ['name']
         }]
     })
-    .then(webtoons => res.send(webtoons))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+        .then(webtoons => res.send(webtoons))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
 }
 
-const showWebtoon = (req, res) => {
+exports.showWebtoon = (req, res) => {
     Webtoon.findOne({
         where: {
             title: req.params.title
         }
     })
-    .then(webtoon => res.send(webtoon))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+        .then(webtoon => res.send(webtoon))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
 }
 
-// 3 choices webtoon
-const showChoicesWebtoons = (req, res) => {
-    const {gt, gte, lte, ne, in: opIn} = Sequelize.Op;
+exports.showChoicesWebtoons = (req, res) => {
+    const { gt, gte, lte, ne, in: opIn } = Sequelize.Op;
     Webtoon.findAll({
         where: {
             favourite_count: {
@@ -48,18 +47,17 @@ const showChoicesWebtoons = (req, res) => {
         limit: 3,
         attributes: [['image', 'url'], 'title']
     })
-    .then(webtoons => res.send(webtoons))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+        .then(webtoons => res.send(webtoons))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
 }
 
-// show all popular webtoon
-const showPolpularWebtoons = (req, res) => {
-    const {gt, gte, lte, ne, in: opIn} = Sequelize.Op;
+exports.showPolpularWebtoons = (req, res) => {
+    const { gt, gte, lte, ne, in: opIn } = Sequelize.Op;
     Webtoon.findAll({
         where: {
             favourite_count: {
@@ -72,16 +70,16 @@ const showPolpularWebtoons = (req, res) => {
             attributes: ['name']
         }]
     })
-    .then(webtoons => res.send(webtoons))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+        .then(webtoons => res.send(webtoons))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
 }
 
-const showMyWebtoons = (req, res) => {
+exports.showMyWebtoons = (req, res) => {
     Webtoon.findAll({
         where: {
             created_by: req.params.user_id
@@ -92,71 +90,84 @@ const showMyWebtoons = (req, res) => {
         //     attributes: ['name']
         // }]
     })
-    .then(webtoons => res.send(webtoons))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+        .then(webtoons => res.send(webtoons))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
 }
 
-const createMyWebtoon = (req, res) => {
-    const {title, genre, image} = req.body;
-    Webtoon.create({
-        title,
-        genre,
-        image,
-        created_by: req.params.user_id
-    })
-    .then(webtoon => res.send(webtoon))
-    .catch((error) => {
-        console.log(error)
+exports.createMyWebtoon = (req, res) => {
+    const { title, genre, image } = req.body;
+    if (title && genre && image) {
+        Webtoon.create({
+            title,
+            genre,
+            image,
+            created_by: req.params.user_id
+        })
+            .then(webtoon => res.send(webtoon))
+            .catch((e) => {
+                res.send({
+                    error: true,
+                    message: errorHandler.showMessage(e)
+                });
+            });
+    } else {
         res.send({
-            error: true
+            error: true,
+            message: 'all field cannot be empty'
         });
-    });
+    }
 }
 
-const updateMyWebtoon = (req, res) => {
-    // const {title, genre, image} = req.body;
-    Webtoon.update(
-    req.body,
-    {where:{id: req.params.webtoon_id,created_by: req.params.user_id},
-    })
-    .then(() => {
-        Webtoon.findOne({where: {id: req.params.webtoon_id}})
-        .then(webtoons => res.send(webtoons));
-    })
-    .catch((error) => {
-        console.log(error)
+exports.updateMyWebtoon = (req, res) => {
+    const { title, genre, image } = req.body;
+    if (title || genre || image) {
+        Webtoon.update(
+            req.body,
+            {
+                where: { id: req.params.webtoon_id, created_by: req.params.user_id },
+            })
+            .then(() => {
+                Webtoon.findOne({ where: { id: req.params.webtoon_id } })
+                    .then(webtoons => res.send(webtoons));
+            })
+            .catch((e) => {
+                res.send({
+                    error: true,
+                    message: errorHandler.showMessage(e)
+                });
+            });
+    } else {
         res.send({
-            error: true
+            error: true,
+            message: 'all field cannot be empty'
         });
-    });
+    }
 }
 
-const deleteMyWebtoon = (req, res) => {
-    const {user_id, webtoon_id} = req.params;
-    Webtoon.destroy({where: {id: webtoon_id, created_by: user_id}})
-    .then(result => res.send({
-        id: webtoon_id
-    }))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+exports.deleteMyWebtoon = (req, res) => {
+    const { user_id, webtoon_id } = req.params;
+    Webtoon.destroy({ where: { id: webtoon_id, created_by: user_id } })
+        .then(result => {
+            if (result) {
+                res.send({
+                    id: webtoon_id
+                })
+            } else {
+                res.send({
+                    error: true,
+                    message: 'delete webtoon failed'
+                })
+            }
+        })
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
-}
-
-module.exports = {
-    index,
-    showWebtoon,
-    showChoicesWebtoons,
-    showPolpularWebtoons,
-    showMyWebtoons,
-    createMyWebtoon,
-    updateMyWebtoon,
-    deleteMyWebtoon
 }

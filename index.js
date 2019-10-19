@@ -8,7 +8,6 @@ const port = 5320;
 app.use(bodyParser.json());
 
 // controllers
-const AuthController = require('./controllers/auth');
 const UserController = require('./controllers/user');
 const WebtoonController = require('./controllers/webtoon');
 const FavouriteController = require('./controllers/favourite');
@@ -20,15 +19,12 @@ const { authenticated } = require('./middleware');
 
 app.group('/api/v1/', (router) => {
 
-    // ------------- AUTH ---------------// 
-    router.post('/login', AuthController.login);
-
-    // ------------- USER ---------------//
-    router.post('/register', UserController.registerUser);
+    // --------------- User ------------------ //
+    router.post('/register', UserController.register);
+    router.post('/login', UserController.login);
 
 
-
-    // ------------- WEBTOON ---------------//
+    // --------------- Webtoon ------------------ //
     router.get('/webtoons', authenticated, WebtoonController.index);
     router.get('/webtoons/choices', authenticated, WebtoonController.showChoicesWebtoons)
     router.get('/webtoons/popular', authenticated, WebtoonController.showPolpularWebtoons);

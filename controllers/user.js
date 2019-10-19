@@ -1,44 +1,87 @@
-const bcrypt = require('bcrypt');
-const models = require('../models');
 const jwt = require('jsonwebtoken');
+const models = require('../models');
+const bcrypt = require('bcrypt');
 const errorHandler = require('../handlers/errorHandler.js');
+
 const User = models.user;
 
-const registerUser = (req, res) => {
-    const {email, password, name} = req.body;
-    if (email == "" || password == "" || name == "") {
+exports.login = ( req, res ) => {
+    const { email, password } = req.body;
+
+    User
+    .findOne({ where: { email }})
+    .then( user => {
+        if ( user ) {
+            bcrypt.compare(password, user.password, ( e, result ) => {
+                if (e) {
+                    res.send({
+                        error: true,
+                        message: errorHandler.showMessage(e, 'encryption')
+                    })
+                } else if ( result ) {
+                    const token = 'Bearer ' + jwt.sign({ userId: user.id }, '12378bhdfhdsj783hjsdf237rhjsd');
+                    res.send({
+                        name: user.name,
+                        token
+                    });
+                } else {
+                    res.send({
+                        error: true,
+                        message: 'wrong password!'
+                    });
+                }
+            })
+        } else {
+            res.send({
+                error: true,
+                message: 'e-mail not registered!'
+            });
+        }
+    })
+    .catch(e => {
         res.send({
             error: true,
-            message: 'field cannot be empty!'
-        })
-    } else {
-        bcrypt.hash(password, 10, (err, hash) => {
-            if (err) throw err;
-            User.create({
-                email,
-                password: hash,
-                name
-            },{
-                attributes: ['id', "name"]
-            })
-            .then((user) => {
-                const token = 'Bearer ' +  jwt.sign({ userId: user.id }, 'b4C0t1n4J4');
-                res.send({
-                    id: user.id,
-                    name: user.name,
-                    token
-                });
-            })
-            .catch((error) => {
-                console.log(error)
-                res.send({
-                    error: true
-                });
-            });  
+            message: errorHandler.showMessage(e, 'validation')
         });
-    }
+    })
 }
 
-module.exports = {
-    registerUser
+// --------------------------------------------------------------------------------
+
+exports.register = ( req, res ) => {
+    const { email, password, name } = req.body;
+    if ( email == '' || password == '' || name == '' ) {
+        res.send({
+            error: true,
+            message: 'field cannot be empty'
+        });
+    } else {
+        bcrypt.hash( password, 10, ( e, hash ) => {
+            if (e) {
+                res.send({
+                    error: true,
+                    message: errorHandler.showMessage(e, 'encryption')
+                });
+            } else {
+                User.create({
+                    email,
+                    password: hash,
+                    name
+                })
+                .then((user) => {
+                    const token = 'Bearer ' +  jwt.sign({ userId: user.id }, 'b4C0t1n4J4');
+                    res.send({
+                        name: user.name,
+                        token
+                    });
+                })
+                .catch((e) => {
+                    res.send({
+                        error: true,
+                        message: errorHandler.showMessage(e, 'validation')
+                    });
+                }); 
+            }
+        });
+    }
 }

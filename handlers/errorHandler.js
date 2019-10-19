@@ -1,12 +1,13 @@
-exports.showMessage = (e, errorType) => {
-    switch (errorType) {
-        case 'validation':
-            return e.errors.message;
-        case 'encryption':
-            return 'error when encrypt and verify encrypted data'
+exports.showMessage = (e) => {
+    switch (e.name) {
+        case 'SequelizeUniqueConstraintError':
+            return e.errors[0].path + ' cannot same.'
         default:
-            console.log(e)
-            return e;
-            break;
+            if (e.errors[0]) {
+                return e.errors[0].message;
+            } else {
+                return "Error: " + e.name + "\n" +
+                    "ErrorCode: " + e.parent.code;
+            }
     }
 }

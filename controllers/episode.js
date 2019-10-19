@@ -15,10 +15,10 @@ Episode.findAll({
         // }]
     })
     .then(episodes => res.send(episodes))
-    .catch((error) => {
-        console.log(error)
+    .catch((e) => {
         res.send({
-            error: true
+            error: true,
+            message: errorHandler.showMessage(e)
         });
     });
 }
@@ -36,70 +36,87 @@ const showWebtoonEpisodePages = (req, res) => {
             // }]
         })
         .then(images => res.send(images))
-        .catch((error) => {
-            console.log(error)
+        .catch((e) => {
             res.send({
-                error: true
+                error: true,
+                message: errorHandler.showMessage(e)
             });
         });
     })
-    .catch((error) => {
-        console.log(error)
+    .catch((e) => {
         res.send({
-            error: true
+            error: true,
+            message: errorHandler.showMessage(e)
         });
     });
 }
 
 const createEpisode = (req, res) => {
-    console.log(req.params)
     const {image, title} = req.body;
-    Episode.create({
-        webtoon_id: req.params.webtoon_id,
-        created_by: req.params.user_id,
-        title,
-        image
-    })
-    .then(image => res.send(image))
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+    if (title && image) {
+        Episode.create({
+            webtoon_id: req.params.webtoon_id,
+            created_by: req.params.user_id,
+            title,
+            image
+        })
+        .then(image => res.send(image))
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
+    } else {
+        res.send({
+            error: true,
+            message: 'all field cannot be empty'
+        });
+    }
 }
 
 const updateEpisode = (req, res) => {
     const {image, title} = req.body;
-    Episode.update({
-        title,
-        image
-    },
-    {
-        where: {id: req.params.episode_id}
-    })
-    .then(() => {
-        Episode.findOne({where: {id: req.params.episode_id}})
-        .then(episode => res.send(episode));
-    })
-    .catch((error) => {
-        console.log(error)
-        res.send({
-            error: true
+    if (title && image) {
+        Episode.update({
+            title,
+            image
+        },
+        {
+            where: {id: req.params.episode_id}
+        })
+        .then(() => {
+            Episode.findOne({where: {id: req.params.episode_id}})
+            .then(episode => res.send(episode));
+        })
+        .catch((e) => {
+            res.send({
+                error: true,
+                message: errorHandler.showMessage(e)
+            });
         });
-    });
+    }
 }
 
 const deleteEpisode = (req, res) => {
     const {episode_id} = req.params;
     Episode.destroy({where: {id: episode_id}})
-    .then(result => res.send({
-        id: episode_id
-    }))
-    .catch((error) => {
-        console.log(error)
+    .then(result =>  {
+        if (result) {
+            res.send({
+                id: webtoon_id
+            })
+        } else {
+            res.send({
+                error: true,
+                message: 'delete webtoon failed'
+            });
+        }
+    })
+    .catch((e) => {
         res.send({
-            error: true
+            error: true,
+            message: errorHandler.showMessage(e)
         });
     });
 }
