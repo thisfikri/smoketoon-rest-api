@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      profile_image: {
+        type: Sequelize.STRING,
+      },
       email: {
         type: Sequelize.STRING,
         unique: true,

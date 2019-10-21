@@ -9,6 +9,9 @@ Episode.findAll({
         where: {
             webtoon_id: req.params.webtoon_id
         },
+        order: [
+            ['id', 'DESC']
+        ]
         // include: [{
         //     model: Webtoon,
         //     as: 'webtoonId'

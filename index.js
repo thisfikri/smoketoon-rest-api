@@ -22,20 +22,24 @@ app.group('/api/v1/', (router) => {
     // --------------- User ------------------ //
     router.post('/register', UserController.register);
     router.post('/login', UserController.login);
+    router.get('/user/:user_id/profile', authenticated, UserController.showProfileData);
+    router.put('/user/:user_id/profile', authenticated, UserController.updateProfileData);
 
 
     // --------------- Webtoon ------------------ //
     router.get('/webtoons', authenticated, WebtoonController.index);
-    router.get('/webtoons/choices', authenticated, WebtoonController.showChoicesWebtoons)
+    router.get('/webtoons/choices', authenticated, WebtoonController.showChoicesWebtoons);
     router.get('/webtoons/popular', authenticated, WebtoonController.showPolpularWebtoons);
-    router.get('/user/:user_id/webtoons/favourite', authenticated, FavouriteController.showMyFavourites);
-    router.get('/webtoon/:title', authenticated, WebtoonController.showWebtoon);
-    router.post('/user/:user_id/webtoon/:webtoon_id/favourite', authenticated, FavouriteController.addMyFavourite);
-    router.delete('/user/:user_id/webtoon/:webtoon_id/favourite/:favourite_id', authenticated, FavouriteController.deleteMyFavourite);
     router.get('/user/:user_id/webtoons', authenticated, WebtoonController.showMyWebtoons);
     router.post('/user/:user_id/webtoon', authenticated, WebtoonController.createMyWebtoon);
     router.put('/user/:user_id/webtoon/:webtoon_id', authenticated, WebtoonController.updateMyWebtoon);
     router.delete('/user/:user_id/webtoon/:webtoon_id', authenticated, WebtoonController.deleteMyWebtoon);
+
+    // ----------------- Favourite -------------- //
+    router.get('/user/:user_id/webtoons/favourite', authenticated, FavouriteController.showMyFavourites);
+    router.get('/webtoon/:title', authenticated, WebtoonController.showWebtoon);
+    router.post('/user/:user_id/webtoon/:webtoon_id/favourite', authenticated, FavouriteController.addMyFavourite);
+    router.delete('/user/:user_id/webtoon/:webtoon_id/favourite/:favourite_id', authenticated, FavouriteController.deleteMyFavourite);    
     // router.get('/webtoons/favourite', authenticated, FavouriteController.showFavourites);
 
 
@@ -54,4 +58,4 @@ app.group('/api/v1/', (router) => {
     router.delete('/user/:user_id/webtoon/:webtoon_id/episode/:episode_id/image/:image_id', authenticated, ImageController.deleteImage);
 });
 
-app.listen(process.env.PORT||9000, () => console.log(`Listen on Port 9000`));
+app.listen(port, () => console.log(`Listen on Port ${port}`));

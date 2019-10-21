@@ -3,7 +3,7 @@ exports.showMessage = (e) => {
         case 'SequelizeUniqueConstraintError':
             return e.errors[0].path + ' cannot same.'
         default:
-            if (e.errors[0]) {
+            if (e.errors) {
                 return e.errors[0].message;
             } else {
                 return "Error: " + e.name + "\n" +

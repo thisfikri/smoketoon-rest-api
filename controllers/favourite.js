@@ -16,7 +16,9 @@ exports.showMyFavourites = (req, res) => {
         //     attributes: ['name']
         // }]
     })
-    .then(favourites => res.send(favourites))
+    .then(favourites =>  {
+        res.send(JSON.stringify(favourites))
+    })
     .catch((e) => {
         res.send({
             error: true,
@@ -52,11 +54,20 @@ exports.addMyFavourite = (req, res) => {
             user_id: req.params.user_id,
             webtoon_id: req.params.webtoon_id
         })
-        .then(result => res.send(result))
+        .then(result => {
+            Webtoon.findOne({where: {
+                id: req.params.webtoon_id
+            }})
+            .then(webtoons => {
+                result.dataValues.webtoonId = webtoons.dataValues;
+                // console.log(result)
+                res.send(result)
+            })
+        })
         .catch((e) => {
             res.send({
                 error: true,
-                message: errorHandler.showMessage(e)
+                message: e
             });
         });
     } else {
