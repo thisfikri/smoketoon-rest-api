@@ -8,21 +8,27 @@ module.exports = {
       genre: 'Drama',
       image: 'https://via.placeholder.com/1020',
       favourite_count: 100,
-      created_by: 1
+      created_by: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     },
     {
       title: "Age Matters",
       genre: 'Romance',
       image: 'https://via.placeholder.com/1020',
       favourite_count: 100,
-      created_by: 2
+      created_by: 2,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     },
     {
       title: "A Good Day to be a Dog",
       genre: 'Drama',
       image: 'https://via.placeholder.com/1020',
       favourite_count: 100,
-      created_by: 3
+      created_by: 3,
+      createdAt: new Date().toISOString(),
+       updatedAt: new Date().toISOString()
     }
   ]);
   },
