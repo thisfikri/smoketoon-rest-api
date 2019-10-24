@@ -28,7 +28,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: false,
-        // defaultValue: 'unpublished'
+        defaultValue: 'unpublished'
       },
       created_by: {
         type: Sequelize.INTEGER,
