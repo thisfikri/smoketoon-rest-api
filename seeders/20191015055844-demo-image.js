@@ -65,23 +65,7 @@ module.exports = {
         created_by: 3,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
-      },
-      {
-        image: 'https://via.placeholder.com/1080',
-        id_episode: 3,
-        webtoon_id: 3,
-        created_by: 3,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      },
-      {
-        image: 'https://via.placeholder.com/1080',
-        id_episode: 3,
-        webtoon_id: 3,
-        created_by: 3,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      },
+      }
     ])
   },
 
