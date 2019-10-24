@@ -131,7 +131,6 @@ exports.createMyWebtoon = (req, res) => {
                 //     o.webtoon_id = webtoon.id
                 //     return o
                 // });
-                console.log(webtoon)
                 res.send(webtoon)
 
                 // Episode.bulkCreate(req.body.childData.episodes)
@@ -148,7 +147,7 @@ exports.createMyWebtoon = (req, res) => {
                 //     })
             })
             .catch((e) => {
-                // if (e) throw e;
+                if (e) throw e;
                 // console.log(e)
                 // res.send({
                 //     error: true,

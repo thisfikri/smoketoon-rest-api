@@ -110,17 +110,11 @@ exports.showProfileData = (req, res) => {
 
 exports.updateProfileData = (req, res) => {
     console.log(req)
-    User.update({
-        name: req.body.name,
-        profile_image: req.file.path
-    }, {
+    User.update(req.body, {
         where: { id: req.params.user_id }
     })
         .then(result => {
-            res.send({
-                name: req.body.name,
-                profile_image: req.file.path
-            })
+            res.send(result)
         })
         .catch(e => {
             res.send({
