@@ -17,19 +17,19 @@ module.exports = {
        email: 'blakes@xmail.com',
        password: '123456',
        name: 'blakes',
-       profile_image: ''
+       profile_image: 'default-pic'
      },
      {
        email: 'arapx@xmail.com',
        password: '123456',
        name: 'arap',
-       profile_image: ''
+       profile_image: 'default-pic'
      },
      {
        email: 'exinos@rmail.com',
        password: '123456',
        name: 'exinos',
-       profile_image: ''
+       profile_image: 'default-pic'
      }
    ]);
   },
