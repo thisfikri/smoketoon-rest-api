@@ -7,7 +7,7 @@ const app = express();
 const port = 5320;
 
 app.use(bodyParser.json());
-app.use(express.static('public'))
+app.use(express.static('uploads'))
 
 // controllers
 const UserController = require('./controllers/user');
@@ -67,4 +67,4 @@ app.group('/api/v1/', (router) => {
     router.delete('/user/:user_id/webtoon/:webtoon_id/episode/:episode_id/image/:image_id', authenticated, ImageController.deleteImage);
 });
 
-app.listen(process.env.PORT||9876, () => console.log(`Listen on Port 9876`));
+app.listen(port, () => console.log(`Listen on Port ${port}`));
