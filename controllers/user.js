@@ -114,8 +114,7 @@ exports.updateProfileData = (req, res) => {
         where: { id: req.params.user_id }
     })
         .then(result => {
-        console.log(result);
-            res.send(result)
+            res.send(req.body)
         })
         .catch(e => {
             res.send({
