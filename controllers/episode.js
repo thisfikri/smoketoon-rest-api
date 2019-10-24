@@ -18,12 +18,9 @@ Episode.findAll({
         // }]
     })
     .then(episodes => res.send(episodes))
-    .catch((e) => {
-        res.send({
-            error: true,
-            message: errorHandler.showMessage(e)
-        });
-    });
+    // .catch((e) => {
+    //     if (e) throw e;
+    // });
 }
 
 exports.showWebtoonEpisodeLastID = (req, res) => {
@@ -37,6 +34,9 @@ exports.showWebtoonEpisodeLastID = (req, res) => {
     .then(episodes => {
         res.send(episodes)
     })
+    // .catch(e => {
+    //     if (e) throw e;
+    // })
 }
 
 exports.showWebtoonEpisodePages = (req, res) => {
@@ -53,19 +53,19 @@ exports.showWebtoonEpisodePages = (req, res) => {
             // }]
         })
         .then(images => res.send(images))
-        .catch((e) => {
-            res.send({
-                error: true,
-                message: errorHandler.showMessage(e)
-            });
-        });
+        // .catch((e) => {
+        //     res.send({
+        //         error: true,
+        //         message: errorHandler.showMessage(e)
+        //     });
+        // });
     })
-    .catch((e) => {
-        res.send({
-            error: true,
-            message: errorHandler.showMessage(e)
-        });
-    });
+    // .catch((e) => {
+    //     res.send({
+    //         error: true,
+    //         message: errorHandler.showMessage(e)
+    //     });
+    // });
 }
 
 exports.createEpisode = (req, res) => {
@@ -88,13 +88,13 @@ exports.createEpisode = (req, res) => {
             .then(images => {
                 res.send(episode)
             })
-            .catch(e => {
-                console.log(e)
-            })
+            // .catch(e => {
+            //     console.log(e)
+            // })
         })
-        .catch((e) => {
-            console.log(e)
-        });
+        // .catch((e) => {
+        //     console.log(e)
+        // });
     } else {
         res.send({
             error: true,
@@ -122,9 +122,9 @@ exports.updateEpisode = (req, res) => {
             })
             .catch(e => console.log(e))
         })
-        .catch((e) => {
-            console.log(e)
-        });
+        // .catch((e) => {
+        //     console.log(e)
+        // });
     } else {
         console.log('Error')
     }
@@ -146,10 +146,10 @@ exports.deleteEpisode = (req, res) => {
             });
         }
     })
-    .catch((e) => {
-        res.send({
-            error: true,
-            message: errorHandler.showMessage(e)
-        });
-    });
+    // .catch((e) => {
+    //     res.send({
+    //         error: true,
+    //         message: errorHandler.showMessage(e)
+    //     });
+    // });
 }

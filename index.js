@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 require('express-group-routes');
 
 const app = express();
@@ -16,6 +17,12 @@ const ImageController = require('./controllers/image');
 
 // middleware
 const { authenticated } = require('./middleware');
+const { upload } = require('./uploads')
+
+// --------------- Upload ------------------ //
+app.get('/', (req, res) => {
+    res.status(200).send('You can post to /api/v1')
+})
 
 app.group('/api/v1/', (router) => {
 
@@ -23,7 +30,7 @@ app.group('/api/v1/', (router) => {
     router.post('/register', UserController.register);
     router.post('/login', UserController.login);
     router.get('/user/:user_id/profile', authenticated, UserController.showProfileData);
-    router.put('/user/:user_id/profile', authenticated, UserController.updateProfileData);
+    router.post('/user/:user_id/profile', authenticated, upload.single('profileImage'), UserController.updateProfileData);
 
 
     // --------------- Webtoon ------------------ //

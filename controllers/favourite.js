@@ -64,12 +64,12 @@ exports.addMyFavourite = (req, res) => {
                 res.send(result)
             })
         })
-        .catch((e) => {
-            res.send({
-                error: true,
-                message: e
-            });
-        });
+        // .catch((e) => {
+        //     res.send({
+        //         error: true,
+        //         message: e
+        //     });
+        // });
     } else {
         res.send({
             error: true,
@@ -98,10 +98,10 @@ exports.deleteMyFavourite = (req , res) => {
             });
         }
     })
-    .catch((e) => {
-        res.send({
-            error: true,
-            message: errorHandler.showMessage(e)
-        });
-    });
+    // .catch((e) => {
+    //     res.send({
+    //         error: true,
+    //         message: errorHandler.showMessage(e)
+    //     });
+    // });
 }
