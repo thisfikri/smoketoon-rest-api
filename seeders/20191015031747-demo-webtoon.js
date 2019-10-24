@@ -7,6 +7,7 @@ module.exports = {
       title: "True Beauty",
       genre: 'Drama',
       image: 'https://via.placeholder.com/1020',
+      status: 'unpublished',
       favourite_count: 100,
       created_by: 1
     },
@@ -14,6 +15,7 @@ module.exports = {
       title: "Age Matters",
       genre: 'Romance',
       image: 'https://via.placeholder.com/1020',
+      status: 'unpublished',
       favourite_count: 100,
       created_by: 2
     },
@@ -21,6 +23,7 @@ module.exports = {
       title: "A Good Day to be a Dog",
       genre: 'Drama',
       image: 'https://via.placeholder.com/1020',
+      status: 'unpublished',
       favourite_count: 100,
       created_by: 3
     }
