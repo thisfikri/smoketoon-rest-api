@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path')
 const multer = require('multer');
 require('express-group-routes');
 
@@ -7,7 +8,7 @@ const app = express();
 const port = 5320;
 
 app.use(bodyParser.json());
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // controllers
 const UserController = require('./controllers/user');
