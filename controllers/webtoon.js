@@ -123,6 +123,7 @@ exports.createMyWebtoon = (req, res) => {
             genre,
             image,
             favourite_count: 0,
+            status: 'unpublished',
             created_by: req.params.user_id
         })
             .then(webtoon => {
