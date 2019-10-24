@@ -7,7 +7,7 @@ const app = express();
 const port = 5320;
 
 app.use(bodyParser.json());
-app.use(express.static('uploads'))
+app.use(express.static('public'))
 
 // controllers
 const UserController = require('./controllers/user');
