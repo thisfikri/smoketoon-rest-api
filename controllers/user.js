@@ -109,6 +109,7 @@ exports.showProfileData = (req, res) => {
 }
 
 exports.updateProfileData = (req, res) => {
+    console.log(req)
     User.update({
         name: req.body.name,
         profile_image: req.file.path
