@@ -20,9 +20,9 @@ const { authenticated } = require('./middleware');
 const { upload } = require('./uploads')
 
 // --------------- Upload ------------------ //
-app.get('/', (req, res) => {
-    res.status(200).send('You can post to /api/v1')
-})
+// app.get('/', (req, res) => {
+//     res.status(200).send('You can post to /api/v1')
+// })
 
 app.group('/api/v1/', (router) => {
 
