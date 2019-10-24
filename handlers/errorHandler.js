@@ -6,8 +6,7 @@ exports.showMessage = (e) => {
             if (e.errors) {
                 return e.errors[0].message;
             } else {
-                return "Error: " + e.name + "\n" +
-                    "ErrorCode: " + e.parent.code;
+                return e
             }
     }
 }

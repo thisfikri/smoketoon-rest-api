@@ -10,6 +10,7 @@ module.exports = {
       },
       profile_image: {
         type: Sequelize.STRING,
+        defaultValue: 'default-pic'
       },
       email: {
         type: Sequelize.STRING,

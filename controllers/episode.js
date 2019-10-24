@@ -25,6 +25,20 @@ Episode.findAll({
         });
     });
 }
+
+exports.showWebtoonEpisodeLastID = (req, res) => {
+    Episode.findAll({
+        attributes: ['id'],
+        order: [
+            ['id', 'DESC']
+        ],
+        limit: 1
+    })    
+    .then(episodes => {
+        res.send(episodes)
+    })
+}
+
 exports.showWebtoonEpisodePages = (req, res) => {
     Episode.findOne({
         where: {webtoon_id: req.params.webtoon_id}
@@ -56,6 +70,7 @@ exports.showWebtoonEpisodePages = (req, res) => {
 
 exports.createEpisode = (req, res) => {
     const {image, title} = req.body;
+    console.log(req.body)
     if (title && image) {
         Episode.create({
             webtoon_id: req.params.webtoon_id,
@@ -63,12 +78,22 @@ exports.createEpisode = (req, res) => {
             title,
             image
         })
-        .then(image => res.send(image))
-        .catch((e) => {
-            res.send({
-                error: true,
-                message: errorHandler.showMessage(e)
+        .then(episode => {
+            req.body.pages.map(o => {
+                o.id_episode = episode.id;
+                return o;
             });
+
+            Image.bulkCreate(req.body.pages)
+            .then(images => {
+                res.send(episode)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        })
+        .catch((e) => {
+            console.log(e)
         });
     } else {
         res.send({
@@ -80,7 +105,8 @@ exports.createEpisode = (req, res) => {
 
 exports.updateEpisode = (req, res) => {
     const {image, title} = req.body;
-    if (title && image) {
+    
+    if (title || image) {
         Episode.update({
             title,
             image
@@ -90,24 +116,28 @@ exports.updateEpisode = (req, res) => {
         })
         .then(() => {
             Episode.findOne({where: {id: req.params.episode_id}})
-            .then(episode => res.send(episode));
+            .then(episode => {
+                console.log(episode)
+                res.send(episode)
+            })
+            .catch(e => console.log(e))
         })
         .catch((e) => {
-            res.send({
-                error: true,
-                message: errorHandler.showMessage(e)
-            });
+            console.log(e)
         });
+    } else {
+        console.log('Error')
     }
 }
 
 exports.deleteEpisode = (req, res) => {
-    const {episode_id} = req.params;
-    Episode.destroy({where: {id: episode_id}})
+    // const {episode_id} = req.params;
+    // console.log(req.params)
+    Episode.destroy({where: {id: req.params.episode_id}})
     .then(result =>  {
         if (result) {
             res.send({
-                id: webtoon_id
+                id: req.params.episode_id
             })
         } else {
             res.send({

@@ -2,6 +2,8 @@ const models = require('../models');
 const errorHandler = require('../handlers/errorHandler');
 const User = models.user;
 const Webtoon = models.webtoon;
+const Episode = models.episode;
+const Image = models.image;
 const Sequelize = require('sequelize');
 
 exports.index = (req, res) => {
@@ -90,7 +92,20 @@ exports.showMyWebtoons = (req, res) => {
         //     attributes: ['name']
         // }]
     })
-        .then(webtoons => res.send(webtoons))
+        .then(webtoons => {
+            Episode.findAll({
+                where: { created_by: req.params.user_id },
+                attributes: ['webtoon_id', [Sequelize.fn('count', Sequelize.col('webtoon_id')), 'count']],
+                group: ['episode.webtoon_id'],
+                order: Sequelize.literal('count DESC')
+            })
+                .then(episodes => {
+                    // console.log(episodes[0].dataValues, episodes[1].dataValues)
+                    webtoons.push(episodes)
+                    res.send(webtoons)
+                })
+                .catch(e => errorHandler.showMessage(e));
+        })
         .catch((e) => {
             res.send({
                 error: true,
@@ -101,19 +116,44 @@ exports.showMyWebtoons = (req, res) => {
 
 exports.createMyWebtoon = (req, res) => {
     const { title, genre, image } = req.body;
+    console.log(req.body, req)
     if (title && genre && image) {
         Webtoon.create({
             title,
             genre,
             image,
+            favourite_count: 0,
             created_by: req.params.user_id
         })
-            .then(webtoon => res.send(webtoon))
+            .then(webtoon => {
+                // console.log(req.body.childData.episodes)
+                // let newEp = req.body.childData.episodes.map((o) => {
+                //     o.webtoon_id = webtoon.id
+                //     return o
+                // });
+                console.log(webtoon)
+                res.send(webtoon)
+
+                // Episode.bulkCreate(req.body.childData.episodes)
+                //     .then(episodes => {
+                //         // let newImg = req.body.childData.images.map((o, index) => {
+                //         //     o.webtoon_id = webtoon.id
+                //         // });
+                //         // console.log(req.body.childData.images)
+                //         Image.bulkCreate(req.body.childData.images)
+                //         .then(images => {
+                //             // console.log(webtoon)
+                //             res.send(webtoon)
+                //         })
+                //     })
+            })
             .catch((e) => {
-                res.send({
-                    error: true,
-                    message: errorHandler.showMessage(e)
-                });
+                // if (e) throw e;
+                // console.log(e)
+                // res.send({
+                //     error: true,
+                //     message: errorHandler.showMessage(e)
+                // });
             });
     } else {
         res.send({
@@ -124,8 +164,9 @@ exports.createMyWebtoon = (req, res) => {
 }
 
 exports.updateMyWebtoon = (req, res) => {
-    const { title, genre, image } = req.body;
-    if (title || genre || image) {
+    const { title, genre, image, status } = req.body;
+    console.log(req.body)
+    if (title || genre || image || status) {
         Webtoon.update(
             req.body,
             {
@@ -133,7 +174,20 @@ exports.updateMyWebtoon = (req, res) => {
             })
             .then(() => {
                 Webtoon.findOne({ where: { id: req.params.webtoon_id } })
-                    .then(webtoons => res.send(webtoons));
+                    .then(webtoons => {
+                        Episode.findAll({
+                            where: { created_by: req.params.user_id },
+                            attributes: ['webtoon_id', [Sequelize.fn('count', Sequelize.col('webtoon_id')), 'count']],
+                            group: ['episode.webtoon_id'],
+                            order: Sequelize.literal('webtoon_id DESC')
+                        })
+                            .then(episodes => {
+                                webtoons = [webtoons.dataValues]
+                                webtoons.push(episodes[0].dataValues)
+                                res.send(webtoons)
+                            })
+                            .catch(e => console.log(e));
+                    }).catch(e => console.log(e))
             })
             .catch((e) => {
                 res.send({

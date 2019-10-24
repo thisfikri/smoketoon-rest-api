@@ -96,8 +96,8 @@ exports.showProfileData = (req, res) => {
     })
         .then(user => {
             res.send({
-                profileImage: user.profile_image,
-                profileName: user.name
+                profile_image: user.profile_image,
+                name: user.name
             });
         })
         .catch(e => {

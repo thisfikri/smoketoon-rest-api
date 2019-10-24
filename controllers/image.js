@@ -1,22 +1,23 @@
 const models = require('../models');
 const Image = models.image;
+const errorHandler = require('../handlers/errorHandler');
 
 exports.createImage = (req, res) => {
-    const {title, image} = req.body;
+    const {page, image} = req.body;
+    console.log(req.body, req.params)
     if (req.params.episode_id && req.params.webtoon_id && req.params.user_id) {
         Image.create({
             id_episode: req.params.episode_id,
             webtoon_id: req.params.webtoon_id,
             created_by: req.params.user_id,
-            title,
+            page,
             image
         })
-        .then(image => res.send(image))
+        .then(image => {
+            res.send(image)
+        })
         .catch((e) => {
-            res.send({
-                error: true,
-                message: errorHandler.showMessage(e)
-            });
+           console.log(e)
         });
     } else {
         res.send({
