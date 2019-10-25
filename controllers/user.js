@@ -116,18 +116,18 @@ exports.updateProfileData = (req, res) => {
         })
     } else {
         var data = null;
-        if (req.body.name != false && req.file != false) {
+        if (req.name != false && req.file != false) {
             data = {
                 name: req.body.name,
                 profile_image: req.file.path
             }
         } else if (req.body.name != false) {
             data = {
-                profile_image: req.file.path
+                name: req.body.name
             }
         } else if (req.file != false) {
             data = {
-                name: req.body.name
+                profile_image: req.file.path
             }
         }
 
