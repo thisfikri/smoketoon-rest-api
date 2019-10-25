@@ -109,23 +109,39 @@ exports.showProfileData = (req, res) => {
 }
 
 exports.updateProfileData = (req, res) => {
-    console.log(req)
-    User.update({
-        name: req.body.name,
-        profile_image: req.file.path
-    }, {
-        where: { id: req.params.user_id }
-    })
-        .then(result => {
-            res.send({
+    if (req.body.name == false && req.file == false) {
+        res.send({
+            error: true,
+            message: 'no request data'
+        })
+    } else {
+        var data = null;
+        if (req.body.name != false && req.file != false) {
+            data = {
                 name: req.body.name,
                 profile_image: req.file.path
-            })
+            }
+        } else if (req.body.name != false) {
+            data = {
+                profile_image: req.file.path
+            }
+        } else if (req.file != false) {
+            data = {
+                name: req.body.name
+            }
+        }
+
+        User.update(data, {
+            where: { id: req.params.user_id }
         })
-        .catch(e => {
-            res.send({
-                error: true,
-                message: errorHandler.showMessage(e)
+            .then(result => {
+                res.send(data)
+            })
+            .catch(e => {
+                res.send({
+                    error: true,
+                    message: errorHandler.showMessage(e)
+                });
             });
-        });
+    }
 }
