@@ -116,7 +116,7 @@ exports.updateProfileData = (req, res) => {
         })
     } else {
         var data = null;
-        if (req.name != false && req.file != false) {
+        if (req.body.name != false && req.file !== undefined) {
             data = {
                 name: req.body.name,
                 profile_image: req.file.path
@@ -125,12 +125,12 @@ exports.updateProfileData = (req, res) => {
             data = {
                 name: req.body.name
             }
-        } else if (req.file != false) {
+        } else if (req.file !== undefined) {
             data = {
                 profile_image: req.file.path
             }
         }
-
+        
         User.update(data, {
             where: { id: req.params.user_id }
         })
