@@ -115,13 +115,12 @@ exports.showMyWebtoons = (req, res) => {
 }
 
 exports.createMyWebtoon = (req, res) => {
-    const { title, genre, image } = req.body;
-    console.log(req.body, req)
-    if (title && genre && image) {
+    const { title, genre } = req.body;
+    if (title && genre) {
         Webtoon.create({
             title,
             genre,
-            image,
+            image: req.file.path,
             favourite_count: 0,
             status: 'unpublished',
             created_by: req.params.user_id
@@ -164,9 +163,10 @@ exports.createMyWebtoon = (req, res) => {
 }
 
 exports.updateMyWebtoon = (req, res) => {
-    const { title, genre, image, status } = req.body;
-    console.log(req.body)
-    if (title || genre || image || status) {
+    const { title, genre, status } = req.body;
+    let image = req.file;
+    if (title || genre || status || image) {
+        if (image) {req.body.image = image.path}
         Webtoon.update(
             req.body,
             {
@@ -184,10 +184,12 @@ exports.updateMyWebtoon = (req, res) => {
                             .then(episodes => {
                                 webtoons = [webtoons.dataValues]
                                 webtoons.push(episodes[0].dataValues)
+                                console.log(webtoons)
                                 res.send(webtoons)
                             })
                             .catch(e => console.log(e));
-                    }).catch(e => console.log(e))
+                    })
+                    .catch(e => console.log(e))
             })
             .catch((e) => {
                 res.send({

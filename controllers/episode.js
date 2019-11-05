@@ -69,32 +69,41 @@ exports.showWebtoonEpisodePages = (req, res) => {
 }
 
 exports.createEpisode = (req, res) => {
-    const {image, title} = req.body;
-    console.log(req.body)
-    if (title && image) {
+    const {images, title} = req.body;
+    
+    if (title && images) {
         Episode.create({
             webtoon_id: req.params.webtoon_id,
             created_by: req.params.user_id,
             title,
-            image
+            image: req.files[0].path
         })
         .then(episode => {
-            req.body.pages.map(o => {
+            // console.log(typeof(images))
+            let pages;
+            if (typeof(images) == 'object') {
+                pages = JSON.parse(images[0])
+            } else if (typeof(images) == 'string') {
+                pages = JSON.parse(images)
+            }
+            
+            pages.map((o, index) => {
                 o.id_episode = episode.id;
+                o.image = req.files[index].path;
                 return o;
             });
 
-            Image.bulkCreate(req.body.pages)
+            Image.bulkCreate(pages)
             .then(images => {
                 res.send(episode)
             })
-            // .catch(e => {
-            //     console.log(e)
-            // })
+            .catch(e => {
+                console.log(e)
+            })
         })
-        // .catch((e) => {
-        //     console.log(e)
-        // });
+        .catch((e) => {
+            console.log(e)
+        });
     } else {
         res.send({
             error: true,
@@ -105,7 +114,7 @@ exports.createEpisode = (req, res) => {
 
 exports.updateEpisode = (req, res) => {
     const {image, title} = req.body;
-    
+    console.log(title, image)
     if (title || image) {
         Episode.update({
             title,

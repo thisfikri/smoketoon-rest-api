@@ -3,7 +3,7 @@ const Image = models.image;
 const errorHandler = require('../handlers/errorHandler');
 
 exports.createImage = (req, res) => {
-    const {page, image} = req.body;
+    const {page} = req.body;
     console.log(req.body, req.params)
     if (req.params.episode_id && req.params.webtoon_id && req.params.user_id) {
         Image.create({
@@ -11,7 +11,7 @@ exports.createImage = (req, res) => {
             webtoon_id: req.params.webtoon_id,
             created_by: req.params.user_id,
             page,
-            image
+            image: req.file.path
         })
         .then(image => {
             res.send(image)
