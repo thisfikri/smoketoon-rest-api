@@ -5,6 +5,8 @@ const Webtoon = models.webtoon;
 const Episode = models.episode;
 const Image = models.image;
 const Sequelize = require('sequelize');
+const fs = require('fs');
+const path = require('path');
 
 exports.index = (req, res) => {
     Webtoon.findAll({

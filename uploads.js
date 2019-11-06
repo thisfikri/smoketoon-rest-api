@@ -68,17 +68,38 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         let fileName = file.originalname;
+        console.log(req.body)
         switch (file.fieldname) {
             case 'profileImage':
+                // if (fs.existsSync(`${req.body.prevPic}`)) {
+                //     fs.unlink(`${req.body.prevPic}`, (err) => {
+                //         if (err) throw err
+                //     })
+                // }
                 fileName = `-profile-${req.body.name}.${file.mimetype.split('/')[1]}`;
                 break;
             case 'banner':
+                // if (fs.existsSync(`${req.body.prevPic}`)) {
+                //     fs.unlink(`${req.body.prevPic}`, (err) => {
+                //         if (err) throw err
+                //     })
+                // }
                 fileName = `-banner-${req.body.title}.${file.mimetype.split('/')[1]}`;
                 break;
             case 'pageImages':
+                // if (fs.existsSync(`${req.body.prevPic}`)) {
+                //     fs.unlink(`${req.body.prevPic}`, (err) => {
+                //         if (err) throw err
+                //     })
+                // }
                 fileName = `-pages-${req.body.title}.${file.mimetype.split('/')[1]}`;
                 break;
             case 'pageImage':
+                // if (fs.existsSync(`${req.body.prevPic}`)) {
+                //     fs.unlink(`${req.body.prevPic}`, (err) => {
+                //         if (err) throw err
+                //     })
+                // }
                 fileName = `-pages-${req.body.title}.${file.mimetype.split('/')[1]}`;
                 break;
             default:
