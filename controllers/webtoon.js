@@ -52,8 +52,8 @@ exports.showChoicesWebtoons = (req, res) => {
         attributes: [['image', 'url'], 'title']
     })
         .then(webtoons => {
-            webtoons.map(o => {
-                o.url = `https://smoketoon-api.herokuapp.com/${o.url}`
+            webtoons.map((o, index) => {
+                webtoons[index].url = `https://smoketoon-api.herokuapp.com/${webtoons[index].url}`
             })
             res.send(webtoons)
         })
