@@ -125,7 +125,7 @@ exports.showMyWebtoons = (req, res) => {
 
 exports.createMyWebtoon = (req, res) => {
     const { title, genre, status } = req.body;
-    if (title && genre && staus) {
+    if (title && genre && status) {
         Webtoon.create({
             title,
             genre,
