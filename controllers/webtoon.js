@@ -10,6 +10,7 @@ const path = require('path');
 
 exports.index = (req, res) => {
     Webtoon.findAll({
+        where: {status: 'published'},
         include: [{
             model: User,
             as: 'createdBy',
@@ -28,6 +29,7 @@ exports.index = (req, res) => {
 exports.showWebtoon = (req, res) => {
     Webtoon.findOne({
         where: {
+            status: 'published',
             title: req.params.title
         }
     })
@@ -44,6 +46,7 @@ exports.showChoicesWebtoons = (req, res) => {
     const { gt, gte, lte, ne, in: opIn } = Sequelize.Op;
     Webtoon.findAll({
         where: {
+            status: 'published',
             favourite_count: {
                 [gte]: 100,
             }
@@ -71,6 +74,7 @@ exports.showPolpularWebtoons = (req, res) => {
     const { gt, gte, lte, ne, in: opIn } = Sequelize.Op;
     Webtoon.findAll({
         where: {
+            status: 'published',
             favourite_count: {
                 [gte]: 100
             }
