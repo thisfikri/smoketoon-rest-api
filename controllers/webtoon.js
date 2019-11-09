@@ -52,9 +52,11 @@ exports.showChoicesWebtoons = (req, res) => {
         attributes: [['image', 'url'], 'title']
     })
         .then(webtoons => {
-            webtoons.map(o => {
-                o.url = 'https://smoketoon-api.herokuapp.com/' + o.url 
-            })
+            if (webtoons) {
+                webtoons.map(o => {
+                    o.url = 'https://smoketoon-api.herokuapp.com/' + o.url 
+                })
+            }
             res.send(webtoons)
         })
         .catch((e) => {
