@@ -51,7 +51,12 @@ exports.showChoicesWebtoons = (req, res) => {
         limit: 3,
         attributes: [['image', 'url'], 'title']
     })
-        .then(webtoons => res.send(webtoons))
+        .then(webtoons => {
+            webtoons.map(o => {
+                o.url = 'https://smoketoon-api.herokuapp.com/' + o.url 
+            })
+            res.send(webtoons)
+        })
         .catch((e) => {
             res.send({
                 error: true,
@@ -117,14 +122,14 @@ exports.showMyWebtoons = (req, res) => {
 }
 
 exports.createMyWebtoon = (req, res) => {
-    const { title, genre } = req.body;
-    if (title && genre) {
+    const { title, genre, status } = req.body;
+    if (title && genre && staus) {
         Webtoon.create({
             title,
             genre,
             image: req.file.path,
             favourite_count: 0,
-            status: 'unpublished',
+            status,
             created_by: req.params.user_id
         })
             .then(webtoon => {
