@@ -40,9 +40,7 @@ $ npm install # for npm
 ```
 3. change ``app.listen(process.env.PORT||9876, () => console.log(`Listen on Port 9876`))`` to ``app.listen(port, () => console.log(`Listen on Port ${port}`))`` if you want to run it on the local server (You can change the port as you wish), if not don't change it. I use ``process.env.PORT||9876`` because when i use ``port`` it doesn't work when I deploy it on Heroku (https://www.heroku.com).
 
-**Last**
-<br />
-run
+**Run**
 ```console
 $ npx sequelize db:migrate
 $ npm start (the server will run automatically, and the API can be used immediately)
