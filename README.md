@@ -1,5 +1,7 @@
 # Smoketoon REST API
-This project is a REST API for smoketoon mobile app
+This project is a REST API for smoketoon mobile app,
+
+[Link to Mobile App Repository](https://github.com/DumbWaysStudent/DW12CCJG9_webtoon/tree/master)
 
 ## Tech Stack
 * NodeJS (https://nodejs.org/)
