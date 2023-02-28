@@ -48,10 +48,6 @@ $ npx sequelize db:migrate
 $ npm start (the server will run automatically, and the API can be used immediately)
 ```
 
-
-## Contact
-* LinkedIn: https://www.linkedin.com/in/fikri-haikal-478a24194/
-
 ## License
 BSD 3-Clause License
 See [License](https://github.com/thisfikri/smoketoon-rest-api/blob/master/LICENSE)
