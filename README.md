@@ -50,7 +50,6 @@ $ npm start (the server will run automatically, and the API can be used immediat
 
 
 ## Contact
-* WA: +6289514349836
 * LinkedIn: https://www.linkedin.com/in/fikri-haikal-478a24194/
 
 ## License
